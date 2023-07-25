@@ -1,4 +1,4 @@
-# @edgio/experimentation - README
+# Edgio Experimentation
 
 ## Overview
 
