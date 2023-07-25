@@ -1,0 +1,31 @@
+{
+  "name": "@edgio/experimentation",
+  "version": "0.1.0",
+  "description": "Provides access Edgio Experimentation data in your application",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edgio/Experimentation.js.git"
+  },
+  "keywords": [
+    "edgio",
+    "experiments",
+    "ab",
+    "test",
+    "feature",
+    "flags",
+    "canary",
+    "deployment",
+    "release",
+    "management"
+  ],
+  "author": "Raees Iqbal <i@raees.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Edgio/Experimentation.js/issues"
+  },
+  "homepage": "https://github.com/Edgio/Experimentation.js#readme"
+}
