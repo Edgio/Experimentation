@@ -7,8 +7,7 @@ function parseExperimentationInfo(cookieValue) {
         throw new Error('Cookie must be a string');
     }
 
-    const params = new URLSearchParams(decodeURIComponent(cookieValue));
-    return Object.fromEntries(params);
+    return JSON.parse(decodeURIComponent(cookieValue))
 }
 
 module.exports = {

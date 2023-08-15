@@ -24,7 +24,7 @@ The package exports a single function called `parseExperimentationInfo`, which t
 const { parseExperimentationInfo } = require('@edgio/experimentation');
 
 // get cookie from server request or browser
-const cookieValue = 'Testing_new_page_1238476236=New_page_816213&New_Banner_Test_8123712=Old_banner_712312';
+const cookieValue = '%7B%22Testing_new_page_1238476236%22%3A%22New_page_816213%22%2C%22New_Banner_Test_8123712%22%3A%22Old_banner_712312%22%7D';
 const experimentationInfo = parseExperimentationInfo(cookieValue);
 
 console.log(experimentationInfo);
