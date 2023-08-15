@@ -25,7 +25,10 @@
     "release",
     "management"
   ],
-  "author": "Raees Iqbal <i@raees.me>",
+  "author": {
+    "name": "Raees Iqbal",
+    "url": "https://raees.me"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Edgio/Experimentation.js/issues"
