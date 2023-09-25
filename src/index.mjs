@@ -28,11 +28,12 @@ function getInfoForPath(relativeUrl, matchQueryParams = false) {
                 for (const serverEntry of entry.serverTiming) {
                     if (serverEntry.name === 'experiments') {
                         const info = parseInfoFromValue(serverEntry.description);
+                        observer.disconnect();
                         resolve(info);
                     }
                 }
             }
-
+            observer.disconnect();
             resolve(undefined);
         });
 
