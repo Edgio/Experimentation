@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `@edgio/experimentation` package is designed to parse information from the `x-edg-experiments` cookie. This cookie contains data about the experiments and variants that a user is currently assigned to. By using this package, customers can easily extract and utilize the experiment and variant information from the cookie in their applications.
+The `@edgio/experimentation` package provides utilities to extract experiment and variant information from both the `x-edg-experiments-info` origin header and server timing response headers. This allows customers to easily access and utilize the experiment and variant information in their applications.
 
 ## Installation
 
@@ -16,45 +16,68 @@ npm install @edgio/experimentation
 yarn add @edgio/experimentation
 ```
 
-## Usage
+## Accessing Information in Frontend through Server-Timing Header
 
-The package exports a single function called `parseExperimentationInfo`, which takes the `cookieValue` as a parameter and returns a JavaScript object containing the experiment and variant information.
+Each response with experiments information will have a `Server-Timing` header that has a value similar to this:
+
+```
+Server-Timing: edgio_cache;desc=TCP_MISS,edgio_pop;desc=dcd,edgio_country;desc=UA,experiments;desc=%7B%22Testing_new_page_1238476236%22%3A%22New_page_816213%22%2C%22New_Banner_Test_8123712%22%3A%22Old_banner_712312%22%7D
+```
+
+The Experimentation information in this header (encoded in the `experiments` description field) can be access like so:
 
 ```javascript
-const { parseExperimentationInfo } = require('@edgio/experimentation');
+import { getInfoForPath } from '@edgio/experimentation';
 
-// get cookie from server request or browser
-const cookieValue = '%7B%22Testing_new_page_1238476236%22%3A%22New_page_816213%22%2C%22New_Banner_Test_8123712%22%3A%22Old_banner_712312%22%7D';
-const experimentationInfo = parseExperimentationInfo(cookieValue);
+const relativeUrl = '/path/to/resource';
+getInfoForPath(relativeUrl).then((info) => {
+    if (info) {
+        console.log(info);
+    } else {
+        console.log('No experimentation info found for the given path.');
+    }
+});
+
+/*
+{
+    "Testing_new_page_1238476236": "New_page_816213",
+    "New_Banner_Test_8123712": "Old_banner_712312"
+}
+ */
+```
+
+This can be parsed as JSON in your application, giving you a map of Experiment IDs (keys) and their corresponding Variant IDs (values).
+
+You can also use our open-source Experiments library to parse this information as shown below.
+
+## Accessing Information in Backend through x-edg-experiments-info Header
+
+For the request in the example above, when it is received in your backend, it will have the following `x-edg-experiments-info` header:
+
+```
+x-edg-experiments-info: %7B%22Testing_new_page_1238476236%22%3A%22New_page_816213%22%2C%22New_Banner_Test_8123712%22%3A%22Old_banner_712312%22%7D
+```
+
+Similar to the frontend, this header value can be parsed like so:
+
+```javascript
+import { parseInfoFromValue } from '@edgio/experimentation';
+const experimentationInfo = parseInfoFromValue(headers.get('x-edg-experiments-info'));
 
 console.log(experimentationInfo);
-```
-
-Output:
-
-```
+/*
 {
-    Testing_new_page_1238476236: 'New_page_816213',
-    New_Banner_Test_8123712: 'Old_banner_712312'
+    "Testing_new_page_1238476236": "New_page_816213",
+    "New_Banner_Test_8123712": "Old_banner_712312"
 }
+*/
 ```
 
-Now this information can be used in your application. For example
-```javascript
-if (experimentationInfo.Testing_new_page_1238476236 === 'New_page_816213') {
-    // show new page
-} else {
-    // show old page
-}
-
-// Or exposing the Edgio Experimentation information to Google Analytics
-ga('set', 'dimension1', experimentationInfo.Testing_new_page_1238476236);
-
-```
+The `experimentationInfo` provides a JSON object that can be used in your application, giving you a map of Experiment IDs (keys) and their corresponding Variant IDs (values).
 
 ## Error Handling
-
-If the provided cookie value is not a string, the function will throw an error indicating that the cookie must be a string.
+- If the provided header value is not a string, the `parseInfoFromValue` function will throw an error indicating that the header must be a string.
+- If no experimentation info is found for the given path using `getInfoForPath`, it will resolve with `undefined`.
 
 ## Contribution
 
@@ -62,4 +85,5 @@ We welcome contributions from the community! If you encounter any issues or have
 
 ## License
 
-This package is open-source and available under the [MIT License](https://opensource.org/licenses/MIT). Please refer to the LICENSE file for more details.
+This package is open-source and available under the [MIT License](/LICENSE). Please refer to the LICENSE file for more details.
+
