@@ -37,7 +37,9 @@ function getInfoForPath(relativeUrl, matchQueryParams = false) {
             resolve(undefined);
         });
 
-        ["navigation", "resource"].forEach((type) => observer.observe({type, buffered: true}));
+        for (const type of ["navigation", "resource"]) {
+            observer.observe({type, buffered: true});
+        }
     });
 }
 
