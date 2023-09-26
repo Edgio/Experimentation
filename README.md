@@ -76,7 +76,7 @@ console.log(experimentationInfo);
 The `experimentationInfo` provides a JSON object that can be used in your application, giving you a map of Experiment IDs (keys) and their corresponding Variant IDs (values).
 
 ## Error Handling
-- If the provided header value is not a string, the `parseInfoFromValue` function will throw an error indicating that the header must be a string.
+- If the provided header value is not a string or empty, the `parseInfoFromValue` function will return an empty JSON object.
 - If no experimentation info is found for the given path using `getInfoForPath`, it will resolve with `undefined`.
 
 ## Contribution

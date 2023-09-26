@@ -3,8 +3,8 @@
  * @returns {Record<string, string>}
  */
 function parseInfoFromValue(headerValue) {
-    if (typeof headerValue !== 'string') {
-        throw new Error('Cookie must be a string');
+    if (typeof headerValue !== 'string' || headerValue === '') {
+        return {};
     }
 
     return JSON.parse(decodeURIComponent(headerValue));
