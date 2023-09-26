@@ -1,6 +1,6 @@
 {
   "name": "@edgio/experimentation",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Provides access Edgio Experimentation data in your application",
   "exports": {
     "import": "./src/index.mjs",
